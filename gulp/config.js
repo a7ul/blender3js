@@ -1,5 +1,5 @@
 var path = require('path');
-var production = (process.env.NODE_ENV === 'production');
+var production = true || (process.env.NODE_ENV === 'production');
 
 module.exports = {
   bower: 'app/bower_components',
