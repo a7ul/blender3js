@@ -9,7 +9,7 @@ var characterGenerator = function () {
     var mesh = null;
 
     var loader = new THREE.JSONLoader();
-    loader.load("/assets/boxguy.json", function (geometry, materials) {
+    loader.load("assets/boxguy.json", function (geometry, materials) {
       for (var i = 0; i < materials.length; i++) {
         var m = materials[i];
         m.skinning = true;
