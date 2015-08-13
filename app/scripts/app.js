@@ -9,6 +9,8 @@ var rendererConfig = require('./components/rendererConfig');
 var characterGenerator = require('./components/characterGenerator');
 var cameraGenerator = require('./components/cameraGenerator');
 var lightGenerator = require('./components/lightGenerator');
+var keyBoardHandler = require('./components/keyBoardHandler');
+
 var clock = new THREE.Clock();
 var world = function () {
 
@@ -16,7 +18,7 @@ var world = function () {
     var injectDom = $(appendDom)[0];
     var areaHeight = $(appendDom).height();
     var areaWidth = $(appendDom).width();
-
+    var char = null;
 
     var camera = cameraGenerator.init(areaHeight, areaWidth);
     var renderer = rendererConfig.init(injectDom, areaHeight, areaWidth);
@@ -24,7 +26,11 @@ var world = function () {
     var ambientLight = lightGenerator.initAmbient();
 
     var scene = new THREE.Scene();
-    characterGenerator.init(scene);
+    characterGenerator.init().then(function (character) {
+      scene.add(character);
+      character.animator('walkCycle');
+      char = character;
+    });
     scene.add(light);
     scene.add(ambientLight);
     renderer.render(scene, camera);
@@ -33,7 +39,8 @@ var world = function () {
       requestAnimationFrame(animate);
       renderer.render(scene, camera);
       var delta = 0.75 * clock.getDelta();
-      THREE.AnimationHandler.update( delta );
+      THREE.AnimationHandler.update(delta);
+      keyBoardHandler.test(char);
     }
 
     animate();
